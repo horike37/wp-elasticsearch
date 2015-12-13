@@ -3,69 +3,68 @@ add_action( 'admin_menu', 'wpels_add_admin_menu' );
 add_action( 'admin_init', 'wpels_settings_init' );
 
 
-function wpels_add_admin_menu(  ) { 
+function wpels_add_admin_menu() {
 
 	add_options_page( 'WP Elasticsearch', 'WP Elasticsearch', 'manage_options', 'wp_elasticsearch', 'wpels_options_page' );
 
 }
 
 
-function wpels_settings_init(  ) { 
+function wpels_settings_init() {
 
 	register_setting( 'wpElasticsearch', 'wpels_settings' );
 
 	add_settings_section(
-		'wpels_wpElasticsearch_section', 
-		__( '', 'wp-elasticsearch' ), 
-		'wpels_settings_section_callback', 
+		'wpels_wpElasticsearch_section',
+		__( '', 'wp-elasticsearch' ),
+		'wpels_settings_section_callback',
 		'wpElasticsearch'
 	);
 
-	add_settings_field( 
-		'endpoint', 
-		__( 'Elasticsearch Endpoint', 'wp-elasticsearch' ), 
-		'endpoint_render', 
-		'wpElasticsearch', 
-		'wpels_wpElasticsearch_section' 
+	add_settings_field(
+		'endpoint',
+		__( 'Elasticsearch Endpoint', 'wp-elasticsearch' ),
+		'endpoint_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
 	);
 
-	add_settings_field( 
-		'port', 
-		__( 'Port', 'wp-elasticsearch' ), 
-		'port_render', 
-		'wpElasticsearch', 
-		'wpels_wpElasticsearch_section' 
+	add_settings_field(
+		'port',
+		__( 'Port', 'wp-elasticsearch' ),
+		'port_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
 	);
 
-	add_settings_field( 
-		'index', 
-		__( 'index', 'wp-elasticsearch' ), 
-		'index_render', 
-		'wpElasticsearch', 
-		'wpels_wpElasticsearch_section' 
+	add_settings_field(
+		'index',
+		__( 'index', 'wp-elasticsearch' ),
+		'index_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
 	);
 
-	add_settings_field( 
-		'type', 
-		__( 'type', 'wp-elasticsearch' ), 
-		'type_render', 
-		'wpElasticsearch', 
-		'wpels_wpElasticsearch_section' 
+	add_settings_field(
+		'type',
+		__( 'type', 'wp-elasticsearch' ),
+		'type_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
 	);
 
-	add_settings_field( 
-		'custom_fields', 
-		__( 'Costom Fields', 'wp-elasticsearch' ), 
-		'custom_fields_render', 
-		'wpElasticsearch', 
-		'wpels_wpElasticsearch_section' 
+	add_settings_field(
+		'custom_fields',
+		__( 'Costom Fields', 'wp-elasticsearch' ),
+		'custom_fields_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
 	);
-
 
 }
 
 
-function endpoint_render(  ) { 
+function endpoint_render() {
 
 	$options = get_option( 'wpels_settings' );
 	?>
@@ -75,7 +74,7 @@ function endpoint_render(  ) {
 }
 
 
-function port_render(  ) { 
+function port_render() {
 
 	$options = get_option( 'wpels_settings' );
 	?>
@@ -85,7 +84,7 @@ function port_render(  ) {
 }
 
 
-function index_render(  ) { 
+function index_render() {
 
 	$options = get_option( 'wpels_settings' );
 	?>
@@ -95,7 +94,7 @@ function index_render(  ) {
 }
 
 
-function type_render(  ) { 
+function type_render() {
 
 	$options = get_option( 'wpels_settings' );
 	?>
@@ -105,7 +104,7 @@ function type_render(  ) {
 }
 
 
-function custom_fields_render(  ) { 
+function custom_fields_render() {
 
 	$options = get_option( 'wpels_settings' );
 	?>
@@ -115,14 +114,14 @@ function custom_fields_render(  ) {
 }
 
 
-function wpels_settings_section_callback(  ) { 
+function wpels_settings_section_callback() {
 
 	echo __( '', 'wp-elasticsearch' );
 
 }
 
 
-function wpels_options_page(  ) { 
+function wpels_options_page() {
 
 	?>
 	<form action='options.php' method='post'>
