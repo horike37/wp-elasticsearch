@@ -1,14 +1,12 @@
 <?php
-/*
-Plugin Name: WP Elasticsearch
-Version: 0.1
-Description: PLUGIN DESCRIPTION HERE
-Author: YOUR NAME HERE
-Author URI: YOUR SITE HERE
-Plugin URI: PLUGIN SITE HERE
-Text Domain: wp-elasticsearch
-Domain Path: /languages
-*/
+/**
+ * Plugin Name: WP Elasticsearch
+ * Version: 0.1
+ * Description: WordPress search replace Elasticsearch
+ * Author: horike
+ * Text Domain: wp-elasticsearch
+ * Domain Path: /languages
+ **/
 
 require_once 'admin/option.php';
 require_once 'vendor/autoload.php';
@@ -23,6 +21,12 @@ class WP_Elasticsearch {
 	private static $instance;
 	private function __construct() {}
 
+	/**
+	 * Return a singleton instance of the current class
+	 *
+	 * @since 0.1
+	 * @return object
+	 */
 	public static function get_instance() {
 		if ( ! isset( self::$instance ) ) {
 			$c = __CLASS__;
@@ -31,12 +35,23 @@ class WP_Elasticsearch {
 		return self::$instance;
 	}
 
+	/**
+	 * Initialize.
+	 *
+	 * @since 0.1
+	 */
 	public function init() {
 		add_filter( 'admin_init', array( $this, 'data_sync' ) );
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		add_filter( 'wpels_search', array( $this, 'search' ) );
 	}
 
+	/**
+	 * pre_get_posts action. search replace Elasticsearch query.
+	 *
+	 * @param $query
+	 * @since 0.1
+	 */
 	public function pre_get_posts( $query ) {
 		if ( $query->is_search() && $query->is_main_query() ) {
 			$search_query = get_search_query();
@@ -51,6 +66,13 @@ class WP_Elasticsearch {
 		}
 	}
 
+	/**
+	 * search query to Elasticsearch.
+	 *
+	 * @param $search_query
+	 * @return true or WP_Error object
+	 * @since 0.1
+	 */
 	public function search( $search_query ) {
 		try {
 			$options = get_option( 'wpels_settings' );
@@ -77,6 +99,11 @@ class WP_Elasticsearch {
 		}
 	}
 
+	/**
+	 * admin_init action. mapping to Elasticsearch
+	 *
+	 * @since 0.1
+	 */
 	public function data_sync() {
 		if ( isset( $_POST['wpElasticsearchDatasync'] ) && wp_verify_nonce( $_POST['wpElasticsearchDatasync'], 'data_sync' ) ) {
 			$ret = $this->_data_sync();
@@ -89,6 +116,12 @@ class WP_Elasticsearch {
 		}
 	}
 
+	/**
+	 * admin_init action. mapping to Elasticsearch
+	 *
+	 * @return true or WP_Error object
+	 * @since 0.1
+	 */
 	private function _data_sync() {
 		try {
 			$options = get_option( 'wpels_settings' );
@@ -152,6 +185,13 @@ class WP_Elasticsearch {
 		}
 	}
 
+	/**
+	 * Create connection to Elasticsearch
+	 *
+	 * @param $options
+	 * @return Elastica client object
+	 * @since 0.1
+	 */
 	private function _create_client( $options ) {
 		if ( empty( $options['endpoint'] ) || empty( $options['port'] ) || empty( $options['index'] ) || empty( $options['type'] ) ) {
 			return false;

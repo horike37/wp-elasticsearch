@@ -1,8 +1,18 @@
 <?php
 
 class WP_Elasticsearch_Test extends WP_UnitTestCase {
+	
+	/**
+	 * Target post_id
+	 *
+	 */
 	private $search_post_id;
 
+	/**
+	 * Search test. 
+	 *
+	 * @since 0.1
+	 */
 	function test_search() {
 		remove_filter( 'wpels_search', array( WP_Elasticsearch::get_instance(), 'search' ) );
 		add_filter( 'wpels_search', array( $this, 'el_search_mock' ) );
@@ -16,6 +26,11 @@ class WP_Elasticsearch_Test extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * Elasticsearch mock
+	 *
+	 * @since 0.1
+	 */
 	function el_search_mock( $search_query ) {
 		return array( $this->search_post_id );
 	}
