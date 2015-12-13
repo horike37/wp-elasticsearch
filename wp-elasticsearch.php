@@ -189,7 +189,7 @@ class WP_Elasticsearch {
 	 * Create connection to Elasticsearch
 	 *
 	 * @param $options
-	 * @return Elastica client object
+	 * @return Client client object
 	 * @since 0.1
 	 */
 	private function _create_client( $options ) {
