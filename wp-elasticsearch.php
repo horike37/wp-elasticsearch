@@ -137,14 +137,14 @@ class WP_Elasticsearch {
 
 			$mapping = array(
 							'post_title' => array(
-	                                          'type' => 'string',
-	                                          'analyzer' => 'kuromoji',
-	                                          ),
+												'type' => 'string',
+												'analyzer' => 'kuromoji',
+											),
 							'post_content' => array(
-	                                           'type' => 'string',
-	                                           'analyzer' => 'kuromoji',
-	                                          ),
-	                        );
+												'type' => 'string',
+												'analyzer' => 'kuromoji',
+											),
+						);
 			if ( ! empty( $options['custom_fields'] ) ) {
 				$custom_fields = explode( "\n", $options['custom_fields'] );
 				$custom_fields = array_map( 'trim', $custom_fields );
@@ -163,8 +163,8 @@ class WP_Elasticsearch {
 			$docs = array();
 			foreach ( $my_posts as $p ) {
 				$d = array(
-	            	'post_title' => (string) $p->post_title,
-	            	'post_content' => (string) strip_tags( $p->post_content ),
+					'post_title' => (string) $p->post_title,
+					'post_content' => (string) strip_tags( $p->post_content ),
 				);
 				if ( ! empty( $options['custom_fields'] ) ) {
 					foreach ( $custom_fields as $field ) {
