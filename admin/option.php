@@ -61,13 +61,6 @@ function wpels_options_page() {
 		?>
 		
 	</form>
-	
-	<form action='' method='post'>
-		<?php
-		wp_nonce_field( 'data_sync', 'wpElasticsearchDatasync' );
-		submit_button( __( 'Post Data sync to Elasticsearch', 'wp-elasticsearch' ) );
-		?>
-	</form>
 	<?php
 
 }

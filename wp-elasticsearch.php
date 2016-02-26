@@ -41,7 +41,7 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	public function init() {
-		add_filter( 'admin_init', array( $this, 'data_sync' ) );
+		add_action( 'add_option', array( $this, 'data_sync' ) );
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		add_filter( 'wpels_search', array( $this, 'search' ) );
 	}
@@ -104,8 +104,8 @@ class WP_Elasticsearch {
 	 *
 	 * @since 0.1
 	 */
-	public function data_sync() {
-		if ( isset( $_POST['wpElasticsearchDatasync'] ) && wp_verify_nonce( $_POST['wpElasticsearchDatasync'], 'data_sync' ) ) {
+	public function data_sync($option) {
+		if ( isset( $_POST['wpels_settings']["endpoint"] ) ) {
 			$ret = $this->_data_sync();
 			if ( is_wp_error( $ret ) ) {
 				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
@@ -122,8 +122,9 @@ class WP_Elasticsearch {
 	 * @return true or WP_Error object
 	 * @since 0.1
 	 */
-	private function _data_sync() {
+	private function _data_sync($option) {
 		try {
+
 			$options = get_option( 'wpels_settings' );
 			$client = $this->_create_client( $options );
 			if ( ! $client ) {
