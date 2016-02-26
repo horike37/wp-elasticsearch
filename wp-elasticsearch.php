@@ -109,9 +109,7 @@ class WP_Elasticsearch {
 			$ret = $this->_data_sync();
 			if ( is_wp_error( $ret ) ) {
 				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
-				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', $message, 'error' );
-			} else {
-				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', 'Success Data Sync to Elasticsearch', 'updated' );
+				wp_die($message);
 			}
 		}
 	}
@@ -127,12 +125,12 @@ class WP_Elasticsearch {
 
 			$options = get_option( 'wpels_settings' );
 			$client = $this->_create_client( $options );
-			if ( ! $client ) {
+			if ( !$client ) {
 				throw new Exception( 'Couldn\'t make Elasticsearch Client. Parameter is not enough.' );
 			}
 
 			$url = parse_url(home_url());
-			if ( ! $url ) {
+			if ( !$url ) {
 				throw new Exception( 'home_url() is disabled.' );
 			}
 			$index = $client->getIndex( $url['host'] );

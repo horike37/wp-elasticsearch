@@ -23,7 +23,7 @@ function wpels_settings_init() {
 
 	add_settings_field(
 		'endpoint',
-		__( 'Elasticsearch Endpoint', 'wp-elasticsearch' ),
+		__( 'Endpoint', 'wp-elasticsearch' ),
 		'endpoint_render',
 		'wpElasticsearch',
 		'wpels_wpElasticsearch_section'
@@ -49,7 +49,6 @@ function wpels_settings_section_callback() {
 
 
 function wpels_options_page() {
-
 	?>
 	<form action='options.php' method='post'>
 		
