@@ -44,6 +44,23 @@ class WP_Elasticsearch {
 		add_action( 'add_option', array( $this, 'data_sync' ) );
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		add_filter( 'wpels_search', array( $this, 'search' ) );
+		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
+	}
+
+	/**
+	 * save_post action. Sync Elasticsearch.
+	 *
+	 * @param $post_id, $post
+	 * @since 0.1
+	 */
+	public function save_post( $post_id, $post ) {
+		if ( $post->post_type === 'product' ) {
+			$ret = $this->_data_sync();
+			if ( is_wp_error( $ret ) ) {
+				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
+				wp_die($message);
+			}
+		}
 	}
 
 	/**
@@ -120,7 +137,7 @@ class WP_Elasticsearch {
 	 * @return true or WP_Error object
 	 * @since 0.1
 	 */
-	private function _data_sync($option) {
+	private function _data_sync() {
 		try {
 
 			$options = get_option( 'wpels_settings' );
