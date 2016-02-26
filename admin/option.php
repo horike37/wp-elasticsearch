@@ -29,38 +29,6 @@ function wpels_settings_init() {
 		'wpels_wpElasticsearch_section'
 	);
 
-	add_settings_field(
-		'port',
-		__( 'Port', 'wp-elasticsearch' ),
-		'port_render',
-		'wpElasticsearch',
-		'wpels_wpElasticsearch_section'
-	);
-
-	add_settings_field(
-		'index',
-		__( 'index', 'wp-elasticsearch' ),
-		'index_render',
-		'wpElasticsearch',
-		'wpels_wpElasticsearch_section'
-	);
-
-	add_settings_field(
-		'type',
-		__( 'type', 'wp-elasticsearch' ),
-		'type_render',
-		'wpElasticsearch',
-		'wpels_wpElasticsearch_section'
-	);
-
-	add_settings_field(
-		'custom_fields',
-		__( 'Costom Fields', 'wp-elasticsearch' ),
-		'custom_fields_render',
-		'wpElasticsearch',
-		'wpels_wpElasticsearch_section'
-	);
-
 }
 
 
@@ -72,47 +40,6 @@ function endpoint_render() {
 	<?php
 
 }
-
-
-function port_render() {
-
-	$options = get_option( 'wpels_settings' );
-	?>
-	<input type='text' name='wpels_settings[port]' value='<?php echo $options['port']; ?>'>
-	<?php
-
-}
-
-
-function index_render() {
-
-	$options = get_option( 'wpels_settings' );
-	?>
-	<input type='text' name='wpels_settings[index]' value='<?php echo $options['index']; ?>'>
-	<?php
-
-}
-
-
-function type_render() {
-
-	$options = get_option( 'wpels_settings' );
-	?>
-	<input type='text' name='wpels_settings[type]' value='<?php echo $options['type']; ?>'>
-	<?php
-
-}
-
-
-function custom_fields_render() {
-
-	$options = get_option( 'wpels_settings' );
-	?>
-	<textarea cols='40' rows='5' name='wpels_settings[custom_fields]'><?php echo $options['custom_fields']; ?></textarea>
-	<?php
-
-}
-
 
 function wpels_settings_section_callback() {
 

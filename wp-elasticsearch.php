@@ -130,10 +130,13 @@ class WP_Elasticsearch {
 				throw new Exception( 'Couldn\'t make Elasticsearch Client. Parameter is not enough.' );
 			}
 
-			$options = get_option( 'wpels_settings' );
-			$index = $client->getIndex( $options['index'] );
+			$url = parse_url(home_url());
+			if ( ! $url ) {
+				throw new Exception( 'home_url() is disabled.' );
+			}
+			$index = $client->getIndex( $url['host'] );
 			$index->create( array(), true );
-			$type = $index->getType( $options['type'] );
+			$type = $index->getType( 'product' );
 
 			$mapping = array(
 							'post_title' => array(
@@ -145,32 +148,15 @@ class WP_Elasticsearch {
 												'analyzer' => 'kuromoji',
 											),
 						);
-			if ( ! empty( $options['custom_fields'] ) ) {
-				$custom_fields = explode( "\n", $options['custom_fields'] );
-				$custom_fields = array_map( 'trim', $custom_fields );
-				$custom_fields = array_filter( $custom_fields, 'strlen' );
-
-				foreach ( $custom_fields as $field ) {
-					$mapping[ $field ] = array(
-										'type' => 'string',
-										'analyzer' => 'kuromoji',
-										);
-				}
-			}
 
 			$type->setMapping( $mapping );
-			$my_posts = get_posts( array( 'posts_per_page' => -1 ) );
+			$my_posts = get_posts( array( 'posts_per_page' => -1, 'post_type' => 'product' ) );
 			$docs = array();
 			foreach ( $my_posts as $p ) {
 				$d = array(
 					'post_title' => (string) $p->post_title,
 					'post_content' => (string) strip_tags( $p->post_content ),
 				);
-				if ( ! empty( $options['custom_fields'] ) ) {
-					foreach ( $custom_fields as $field ) {
-						$d[ $field ] = (string) strip_tags( get_post_meta( $p->ID, $field, true ) );
-					}
-				}
 				$docs[] = $type->createDocument( (int) $p->ID, $d );
 			}
 			$bulk = new Bulk( $client );
@@ -193,13 +179,13 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	private function _create_client( $options ) {
-		if ( empty( $options['endpoint'] ) || empty( $options['port'] ) || empty( $options['index'] ) || empty( $options['type'] ) ) {
+		if ( empty( $options['endpoint'] ) ) {
 			return false;
 		}
 
 		$client = new \Elastica\Client( array(
 			'host' => $options['endpoint'],
-			'port' => $options['port'],
+			'port' => 80,
 		));
 		return $client;
 	}
