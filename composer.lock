@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5f91a9c5cdfa3b635a0ea6de6276e0b5",
-    "content-hash": "3159dfd5dd9c1f5f7e24692987d18bd9",
+    "hash": "ebcd5328c4b825773981dbcfbae019de",
+    "content-hash": "e27c1bdff272d8854075f2b524e8c3ed",
     "packages": [
         {
             "name": "psr/log",
@@ -47,16 +47,16 @@
         },
         {
             "name": "ruflin/elastica",
-            "version": "dev-master",
+            "version": "3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ruflin/Elastica.git",
-                "reference": "46fcb8c12eba78863fe4b5eb16003d4b9f8452b7"
+                "reference": "fcf0737837c70d7385d32dcdce3e3d46d67aba23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/46fcb8c12eba78863fe4b5eb16003d4b9f8452b7",
-                "reference": "46fcb8c12eba78863fe4b5eb16003d4b9f8452b7",
+                "url": "https://api.github.com/repos/ruflin/Elastica/zipball/fcf0737837c70d7385d32dcdce3e3d46d67aba23",
+                "reference": "fcf0737837c70d7385d32dcdce3e3d46d67aba23",
                 "shasum": ""
             },
             "require": {
@@ -64,17 +64,19 @@
                 "psr/log": "~1.0"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "5.3.*"
+                "aws/aws-sdk-php": "~3.0",
+                "guzzlehttp/guzzle": "~6.0"
             },
             "suggest": {
+                "aws/aws-sdk-php": "Allow using IAM authentication with Amazon ElasticSearch Service",
                 "egeloen/http-adapter": "Allow using httpadapter transport",
-                "guzzlehttp/guzzle": "Allow using guzzle 5.3.x as the http transport (Requires php 5.4)",
+                "guzzlehttp/guzzle": "Allow using guzzle 6 as the http transport (Requires php 5.5)",
                 "monolog/monolog": "Logging request"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.3.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
@@ -98,25 +100,26 @@
                 "client",
                 "search"
             ],
-            "time": "2015-12-10 08:30:29"
+            "time": "2016-05-02 06:33:10"
         }
     ],
     "packages-dev": [
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.5.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "e4fb41d5d0387d556e2c25534d630b3cce90ea67"
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/e4fb41d5d0387d556e2c25534d630b3cce90ea67",
-                "reference": "e4fb41d5d0387d556e2c25534d630b3cce90ea67",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
+                "reference": "fb72ed32f8418db5e7770be1653e62e0d6f5dd3d",
                 "shasum": ""
             },
             "require": {
+                "ext-simplexml": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
@@ -131,7 +134,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -177,7 +180,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2015-12-11 00:12:46"
+            "time": "2016-05-30 22:24:32"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -185,12 +188,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "30db2abace03e44a663a0b0f59837195db03dbff"
+                "reference": "4568e4bcd0ca240daa36bd861a84cff879310497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/30db2abace03e44a663a0b0f59837195db03dbff",
-                "reference": "30db2abace03e44a663a0b0f59837195db03dbff",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/4568e4bcd0ca240daa36bd861a84cff879310497",
+                "reference": "4568e4bcd0ca240daa36bd861a84cff879310497",
                 "shasum": ""
             },
             "require": {
@@ -213,13 +216,12 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2015-12-08 21:10:35"
+            "time": "2016-05-10 04:13:55"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "ruflin/elastica": 20,
         "wp-coding-standards/wpcs": 20
     },
     "prefer-stable": false,

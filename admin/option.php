@@ -23,8 +23,40 @@ function wpels_settings_init() {
 
 	add_settings_field(
 		'endpoint',
-		__( 'Endpoint', 'wp-elasticsearch' ),
+		__( 'Elasticsearch Endpoint', 'wp-elasticsearch' ),
 		'endpoint_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'port',
+		__( 'Port', 'wp-elasticsearch' ),
+		'port_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'index',
+		__( 'index', 'wp-elasticsearch' ),
+		'index_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'type',
+		__( 'type', 'wp-elasticsearch' ),
+		'type_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'custom_fields',
+		__( 'Costom Fields', 'wp-elasticsearch' ),
+		'custom_fields_render',
 		'wpElasticsearch',
 		'wpels_wpElasticsearch_section'
 	);
@@ -41,6 +73,47 @@ function endpoint_render() {
 
 }
 
+
+function port_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[port]' value='<?php echo $options['port']; ?>'>
+	<?php
+
+}
+
+
+function index_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[index]' value='<?php echo $options['index']; ?>'>
+	<?php
+
+}
+
+
+function type_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[type]' value='<?php echo $options['type']; ?>'>
+	<?php
+
+}
+
+
+function custom_fields_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<textarea cols='40' rows='5' name='wpels_settings[custom_fields]'><?php echo $options['custom_fields']; ?></textarea>
+	<?php
+
+}
+
+
 function wpels_settings_section_callback() {
 
 	echo __( '', 'wp-elasticsearch' );
@@ -49,6 +122,7 @@ function wpels_settings_section_callback() {
 
 
 function wpels_options_page() {
+
 	?>
 	<form action='options.php' method='post'>
 		
@@ -59,6 +133,13 @@ function wpels_options_page() {
 		submit_button();
 		?>
 		
+	</form>
+	
+	<form action='' method='post'>
+		<?php
+		wp_nonce_field( 'data_sync', 'wpElasticsearchDatasync' );
+		submit_button( __( 'Post Data sync to Elasticsearch', 'wp-elasticsearch' ) );
+		?>
 	</form>
 	<?php
 

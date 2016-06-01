@@ -41,26 +41,9 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	public function init() {
-		add_action( 'add_option', array( $this, 'data_sync' ) );
+		add_filter( 'admin_init', array( $this, 'data_sync' ) );
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		add_filter( 'wpels_search', array( $this, 'search' ) );
-		add_action( 'save_post', array( $this, 'save_post' ), 10, 2 );
-	}
-
-	/**
-	 * save_post action. Sync Elasticsearch.
-	 *
-	 * @param $post_id, $post
-	 * @since 0.1
-	 */
-	public function save_post( $post_id, $post ) {
-		if ( $post->post_type === 'product' ) {
-			$ret = $this->_data_sync();
-			if ( is_wp_error( $ret ) ) {
-				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
-				wp_die($message);
-			}
-		}
 	}
 
 	/**
@@ -121,12 +104,14 @@ class WP_Elasticsearch {
 	 *
 	 * @since 0.1
 	 */
-	public function data_sync($option) {
-		if ( isset( $_POST['wpels_settings']["endpoint"] ) ) {
+	public function data_sync() {
+		if ( isset( $_POST['wpElasticsearchDatasync'] ) && wp_verify_nonce( $_POST['wpElasticsearchDatasync'], 'data_sync' ) ) {
 			$ret = $this->_data_sync();
 			if ( is_wp_error( $ret ) ) {
 				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
-				wp_die($message);
+				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', $message, 'error' );
+			} else {
+				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', 'Success Data Sync to Elasticsearch', 'updated' );
 			}
 		}
 	}
@@ -139,20 +124,16 @@ class WP_Elasticsearch {
 	 */
 	private function _data_sync() {
 		try {
-
 			$options = get_option( 'wpels_settings' );
 			$client = $this->_create_client( $options );
-			if ( !$client ) {
+			if ( ! $client ) {
 				throw new Exception( 'Couldn\'t make Elasticsearch Client. Parameter is not enough.' );
 			}
 
-			$url = parse_url(home_url());
-			if ( !$url ) {
-				throw new Exception( 'home_url() is disabled.' );
-			}
-			$index = $client->getIndex( $url['host'] );
+			$options = get_option( 'wpels_settings' );
+			$index = $client->getIndex( $options['index'] );
 			$index->create( array(), true );
-			$type = $index->getType( 'product' );
+			$type = $index->getType( $options['type'] );
 
 			$mapping = array(
 							'post_title' => array(
@@ -164,15 +145,32 @@ class WP_Elasticsearch {
 												'analyzer' => 'kuromoji',
 											),
 						);
+			if ( ! empty( $options['custom_fields'] ) ) {
+				$custom_fields = explode( "\n", $options['custom_fields'] );
+				$custom_fields = array_map( 'trim', $custom_fields );
+				$custom_fields = array_filter( $custom_fields, 'strlen' );
+
+				foreach ( $custom_fields as $field ) {
+					$mapping[ $field ] = array(
+										'type' => 'string',
+										'analyzer' => 'kuromoji',
+										);
+				}
+			}
 
 			$type->setMapping( $mapping );
-			$my_posts = get_posts( array( 'posts_per_page' => -1, 'post_type' => 'product' ) );
+			$my_posts = get_posts( array( 'posts_per_page' => -1 ) );
 			$docs = array();
 			foreach ( $my_posts as $p ) {
 				$d = array(
 					'post_title' => (string) $p->post_title,
 					'post_content' => (string) strip_tags( $p->post_content ),
 				);
+				if ( ! empty( $options['custom_fields'] ) ) {
+					foreach ( $custom_fields as $field ) {
+						$d[ $field ] = (string) strip_tags( get_post_meta( $p->ID, $field, true ) );
+					}
+				}
 				$docs[] = $type->createDocument( (int) $p->ID, $d );
 			}
 			$bulk = new Bulk( $client );
@@ -195,13 +193,13 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	private function _create_client( $options ) {
-		if ( empty( $options['endpoint'] ) ) {
+		if ( empty( $options['endpoint'] ) || empty( $options['port'] ) || empty( $options['index'] ) || empty( $options['type'] ) ) {
 			return false;
 		}
 
 		$client = new \Elastica\Client( array(
 			'host' => $options['endpoint'],
-			'port' => 80,
+			'port' => $options['port'],
 		));
 		return $client;
 	}
