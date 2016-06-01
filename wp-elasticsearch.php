@@ -145,7 +145,7 @@ class WP_Elasticsearch {
 	 * @return true or WP_Error object
 	 * @since 0.1
 	 */
-	private function _data_sync() {
+	public function _data_sync() {
 		try {
 			$options = get_option( 'wpels_settings' );
 			$client = $this->_create_client( $options );

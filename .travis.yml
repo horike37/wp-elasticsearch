@@ -6,8 +6,6 @@ notifications:
     on_failure: change
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - hhvm
@@ -16,7 +14,18 @@ php:
 env:
   - WP_VERSION=latest WP_MULTISITE=0
 
-before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+install:
+  - composer self-update
   - composer install
+
+services:
+  - elasticsearch
+
+before_script:
+  - curl -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.2.deb && sudo dpkg -i --force-confnew elasticsearch-1.5.2.deb
+  - sudo /usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-analysis-kuromoji/2.5.0
+  - sleep 10
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - sudo service elasticsearch restart
+  
 script: phpunit
