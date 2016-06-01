@@ -17,7 +17,7 @@ We adopted the Elasticsearch to search engine. You can also search, such as post
 == Installation ==
 1. Upload elasticommerce-search-form to the /wp-content/plugins/ directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Place set Elasticsearch Endpoint on Settings > WP Elasticsearch.
+3. Please set up on Settings > WP Elasticsearch.
 
 == Screenshots ==
 
