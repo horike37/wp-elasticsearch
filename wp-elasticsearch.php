@@ -41,29 +41,36 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	public function init() {
-		add_filter( 'admin_init', array( $this, 'data_sync' ) );
-		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+		add_filter( 'admin_init',   array( $this, 'data_sync' ) );
+		add_filter( 'posts_search', array( $this, 'posts_search' ), 9999, 2);
 		add_filter( 'wpels_search', array( $this, 'search' ) );
+		add_action( 'save_post',    array( $this, 'save_post' ), 10, 2 );
 	}
 
+	
 	/**
-	 * pre_get_posts action. search replace Elasticsearch query.
+	 * posts_search filter hook.
 	 *
-	 * @param $query
+	 * @param $search, $wp_query
+	 * @return String
 	 * @since 0.1
 	 */
-	public function pre_get_posts( $query ) {
-		if ( $query->is_search() && $query->is_main_query() ) {
+	public function posts_search( $search, $wp_query ) {
+
+		global $wpdb;
+		$options = get_option( 'wpels_settings' );
+
+		if ( !is_admin() && $wp_query->is_search && $options !== false ) {
 			$search_query = get_search_query();
 			$post_ids = apply_filters( 'wpels_search', $search_query );
-
-			if ( ! is_wp_error( $post_ids ) ) {
-				$query->set( 'post__in', $post_ids );
-				$query->set( 's', '' );
-			} else {
-				wp_die( 'Elasticsearch Error' );
+	
+			if ( !empty( $post_ids ) && is_array( $post_ids ) ) {
+				$search = 'AND '.$wpdb->posts.'.ID IN (';
+				$search .= implode(',',$post_ids);
+				$search .= ')';
 			}
 		}
+		return $search;
 	}
 
 	/**
@@ -112,6 +119,22 @@ class WP_Elasticsearch {
 				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', $message, 'error' );
 			} else {
 				add_settings_error( 'settings_elasticsearch', 'settings_elasticsearch', 'Success Data Sync to Elasticsearch', 'updated' );
+			}
+		}
+	}
+	
+	/**
+	 * save_post action. Sync Elasticsearch.
+	 *
+	 * @param $post_id, $post
+	 * @since 0.1
+	 */
+	public function save_post( $post_id, $post ) {
+		if ( !empty($_POST) && $post->post_type === 'post' ) {
+			$ret = $this->_data_sync();
+			if ( is_wp_error( $ret ) ) {
+				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
+				wp_die($message);
 			}
 		}
 	}
