@@ -3,7 +3,7 @@
  * Plugin Name: WP Elasticsearch
  * Version: 0.1
  * Description: WordPress search replace Elasticsearch
- * Author: horike
+ * Author: horike,amimotoami
  * Text Domain: wp-elasticsearch
  * Domain Path: /languages
  **/
