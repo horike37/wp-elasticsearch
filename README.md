@@ -11,6 +11,8 @@ This plugin is that WordPress of standard search using `?s=xxx` to replace WordP
 - Please set up on Settings > WP Elasticsearch.
 
 ## Setting
+- 1. Require setting to `Elasticsearch Endpoint`,`Port`,`index`,`type` and push `Save Changes`. It is default search target `post title`, `post content`.
+- 2. Please push `Post Data sync to Elasticsearch`. So Posts data are sent to Elasticsearch.
 <img src="https://raw.githubusercontent.com/horike37/wp-elasticsearch/master/screenshot-1.png" title="screenshot"/>
 
 ## License
