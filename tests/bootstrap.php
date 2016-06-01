@@ -24,7 +24,6 @@ function _manually_load_plugin() {
 	$sleep = 3;
 	do {
 		$response = wp_remote_get( esc_url(ES_HOST).':'. ES_PORT );
-var_dump(esc_url(ES_HOST).':'. ES_PORT);
 		if ( 200 == wp_remote_retrieve_response_code( $response ) ) {
 			// Looks good!
 			break;
