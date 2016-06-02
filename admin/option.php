@@ -38,6 +38,38 @@ function wpels_settings_init() {
 	);
 
 	add_settings_field(
+		'aws_auth',
+		__( 'AWS Auth', 'wp-elasticsearch' ),
+		'aws_auth_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'access_key',
+		__( 'AWS Access Key', 'wp-elasticsearch' ),
+		'access_key_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'secret_key',
+		__( 'AWS Secret Key', 'wp-elasticsearch' ),
+		'secret_key_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
+		'region',
+		__( 'Region', 'wp-elasticsearch' ),
+		'region_render',
+		'wpElasticsearch',
+		'wpels_wpElasticsearch_section'
+	);
+
+	add_settings_field(
 		'index',
 		__( 'index', 'wp-elasticsearch' ),
 		'index_render',
@@ -84,6 +116,46 @@ function port_render() {
 }
 
 
+function aws_auth_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='checkbox' name='wpels_settings[aws_auth]' value='true' <?php if(!empty($options['aws_auth'])) { echo 'checked'; } ?>>
+	<?php
+
+}
+
+
+function access_key_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[access_key]' value='<?php echo $options['access_key']; ?>'>
+	<?php
+
+}
+
+
+function secret_key_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[secret_key]' value='<?php echo $options['secret_key']; ?>'>
+	<?php
+
+}
+
+
+function region_render() {
+
+	$options = get_option( 'wpels_settings' );
+	?>
+	<input type='text' name='wpels_settings[region]' value='<?php echo $options['region']; ?>'>
+	<?php
+
+}
+
+
 function index_render() {
 
 	$options = get_option( 'wpels_settings' );
@@ -125,16 +197,16 @@ function wpels_options_page() {
 
 	?>
 	<form action='options.php' method='post'>
-		
+
 		<h2>WP Elasticsearch</h2>
 		<?php
 		settings_fields( 'wpElasticsearch' );
 		do_settings_sections( 'wpElasticsearch' );
 		submit_button();
 		?>
-		
+
 	</form>
-	
+
 	<form action='' method='post'>
 		<?php
 		wp_nonce_field( 'data_sync', 'wpElasticsearchDatasync' );
