@@ -15,5 +15,8 @@ This plugin is that WordPress of standard search using `?s=xxx` to replace WordP
 - 2. Please push `Post Data sync to Elasticsearch`. So Posts data are sent to Elasticsearch.
 <img src="https://raw.githubusercontent.com/horike37/wp-elasticsearch/master/screenshot-1.png" title="screenshot"/>
 
+## Contributors
+[s-fujimoto](https://github.com/s-fujimoto), [horike37](https://github.com/horike37/)
+
 ## License
 You can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
