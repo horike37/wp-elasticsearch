@@ -220,10 +220,23 @@ class WP_Elasticsearch {
 			return false;
 		}
 
-		$client = new \Elastica\Client( array(
+		$es_options = array(
 			'host' => $options['endpoint'],
 			'port' => $options['port'],
-		));
+		);
+		if ( isset($options['aws_auth']) ) {
+			$es_options['persistent'] = false;
+			$es_options['transport'] = 'AwsAuthV4';
+
+			if ( !empty( $options['access_key'] ) && !empty( $options['secret_key'] ) ) {
+				$es_options['aws_access_key_id'] = $options['access_key'];
+				$es_options['aws_secret_access_key'] = $options['secret_key'];
+			}
+			if ( !empty( $options['region'] ) ) {
+				$es_options['aws_region'] = $options['region'];
+			}
+		}
+		$client = new \Elastica\Client( $es_options );
 		return $client;
 	}
 }
