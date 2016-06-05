@@ -112,7 +112,7 @@ class WP_Elasticsearch {
 	 * @since 0.1
 	 */
 	public function data_sync() {
-		if ( isset( $_POST['wpElasticsearchDatasync'] ) && wp_verify_nonce( $_POST['wpElasticsearchDatasync'], 'data_sync' ) ) {
+		if ( isset( $_POST['wp_elasticsearch_datasync'] ) && wp_verify_nonce( $_POST['wp_elasticsearch_datasync'], 'data_sync' ) ) {
 			$ret = $this->_data_sync();
 			if ( is_wp_error( $ret ) ) {
 				$message = array_shift( $ret->get_error_messages( 'Elasticsearch Mapping Error' ) );
