@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Elasticsearch
+ * Plugin Name: WP Simple Elasticsearch
  * Version: 0.1
  * Description: WordPress search replace Elasticsearch
  * Author: horike,amimotoami

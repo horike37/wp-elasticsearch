@@ -14,10 +14,10 @@ This plugin is that WordPress of standard search using `?s=xxx` to replace WordP
 
 We adopted the Elasticsearch to search engine. You can also search, such as post title, post content, custom fields by replacing the WordPress of standard search function. The accuracy of the search feature dramatically improves in WordPress.
 
-=== Setting ===
-in the [screenshoot section](https://wordpress.org/plugins/wp-elasticsearch/screenshots/) you can look on the first screenshot. 
-1. Require setting to `Elasticsearch Endpoint`,`Port`,`index`,`type` and push `Save Changes`. It is default search target `post title`, `post content`.
-2. Please push `Post Data sync to Elasticsearch`. So Posts data are sent to Elasticsearch.
+= Setting =
+* In the [screenshoot section](https://wordpress.org/plugins/wp-simple-elasticsearch/screenshots/) you can look on the first screenshot. 
+* Require setting to `Elasticsearch Endpoint`,`Port`,`index`,`type` and push `Save Changes`. It is default search target `post title`, `post content`.
+* Please push `Post Data sync to Elasticsearch`. So Posts data are sent to Elasticsearch.
 
 == Installation ==
 1. Upload elasticommerce-search-form to the /wp-content/plugins/ directory.
