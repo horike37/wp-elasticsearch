@@ -224,7 +224,7 @@ class WP_Elasticsearch {
 			'host' => $options['endpoint'],
 			'port' => $options['port'],
 		);
-		if ( isset($options['aws_auth']) ) {
+		if ( isset($options['aws_auth']) && $options['aws_auth'] === 'true' ) {
 			$es_options['persistent'] = false;
 			$es_options['transport'] = 'AwsAuthV4';
 

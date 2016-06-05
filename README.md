@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/horike37/wp-elasticsearch.svg?branch=master)](https://travis-ci.org/horike37/wp-elasticsearch) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/horike37/wp-elasticsearch/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/horike37/wp-elasticsearch/?branch=master)
-# wp-elasticsearch
-Welcome to the official repository for WP Elasticsearch WordPress plugin.
+# WP Simple Elasticsearch
+Welcome to the official repository for WP Simple Elasticsearch WordPress plugin.
 
 ## Description
 This plugin is that WordPress of standard search using `?s=xxx` to replace WordPress DB with Elasticsearch.

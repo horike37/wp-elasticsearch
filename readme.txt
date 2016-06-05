@@ -1,4 +1,4 @@
-=== Wp-elasticsearch ===
+=== WP Simple Elasticsearch ===
 Contributors: horike,amimotoami
 Donate link: https://github.com/horike37/wp-elasticsearch
 Tags: search, elasticsearch
